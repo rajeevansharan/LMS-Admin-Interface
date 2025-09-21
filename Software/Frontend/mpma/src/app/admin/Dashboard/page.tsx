@@ -1,4 +1,3 @@
-
 import AdminDashboard from "./AdminDashboard";
 
 const AdminDashboardPage = () => {

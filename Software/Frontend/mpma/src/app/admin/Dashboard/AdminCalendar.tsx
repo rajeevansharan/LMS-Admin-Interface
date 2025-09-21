@@ -3,7 +3,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Calendar from "react-calendar";
-import { FaRegCalendarAlt, FaArrowRight, FaCircle, FaSearch } from "react-icons/fa";
+import {
+  FaRegCalendarAlt,
+  FaArrowRight,
+  FaCircle,
+  FaSearch,
+} from "react-icons/fa";
 import "react-calendar/dist/Calendar.css";
 import "./daisy-calendar.css";
 import Link from "next/link";
@@ -43,7 +48,9 @@ const AdminCalendar = () => {
   };
 
   const filterEventsByDate = (date: Date) => {
-    const filtered = upcomingEvents.filter(event => isSameDay(event.date, date));
+    const filtered = upcomingEvents.filter((event) =>
+      isSameDay(event.date, date),
+    );
     setFilteredEvents(filtered);
   };
 
@@ -53,9 +60,10 @@ const AdminCalendar = () => {
       setFilteredEvents(upcomingEvents);
       return;
     }
-    const filtered = upcomingEvents.filter(event =>
-      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.description.toLowerCase().includes(searchQuery.toLowerCase())
+    const filtered = upcomingEvents.filter(
+      (event) =>
+        event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.description.toLowerCase().includes(searchQuery.toLowerCase()),
     );
     setFilteredEvents(filtered);
   };
@@ -109,7 +117,8 @@ const AdminCalendar = () => {
             className="daisy-calendar border-0"
             tileClassName={({ date, view }) => {
               if (view !== "month") return "";
-              let classes = "rounded-lg hover:bg-blue-50 transition duration-200";
+              let classes =
+                "rounded-lg hover:bg-blue-50 transition duration-200";
 
               const hasEvent = upcomingEvents.some((e) =>
                 isSameDay(e.date, date),
@@ -216,7 +225,8 @@ const AdminCalendar = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm mb-2">
-                <strong className="text-gray-700">Title:</strong> {selectedEvent.title}
+                <strong className="text-gray-700">Title:</strong>{" "}
+                {selectedEvent.title}
               </p>
               <p className="text-sm mb-2">
                 <strong className="text-gray-700">Date:</strong>{" "}
@@ -236,10 +246,12 @@ const AdminCalendar = () => {
             </div>
             <div>
               <p className="text-sm mb-2">
-                <strong className="text-gray-700">Created By:</strong> {selectedEvent.createdBy}
+                <strong className="text-gray-700">Created By:</strong>{" "}
+                {selectedEvent.createdBy}
               </p>
               <p className="text-sm mb-2">
-                <strong className="text-gray-700">Batch:</strong> {selectedEvent.batch}
+                <strong className="text-gray-700">Batch:</strong>{" "}
+                {selectedEvent.batch}
               </p>
             </div>
           </div>

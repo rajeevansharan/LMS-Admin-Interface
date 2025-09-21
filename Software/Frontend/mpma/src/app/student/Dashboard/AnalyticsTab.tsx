@@ -29,8 +29,13 @@ interface AnalyticsTabProps {
   semesterId: string | number;
 }
 
-export default function AnalyticsTab({ username, semesterId }: AnalyticsTabProps) {
-  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
+export default function AnalyticsTab({
+  username,
+  semesterId,
+}: AnalyticsTabProps) {
+  const [attendanceRecords, setAttendanceRecords] = useState<
+    AttendanceRecord[]
+  >([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +45,7 @@ export default function AnalyticsTab({ username, semesterId }: AnalyticsTabProps
       setError(null);
       try {
         const response = await axios.get<AttendanceRecord[]>(
-          `http://localhost:8080/api/attendance/student/${username}/semester/${semesterId}`
+          `http://localhost:8080/api/attendance/student/${username}/semester/${semesterId}`,
         );
         setAttendanceRecords(response.data);
       } catch (err) {
@@ -53,27 +58,30 @@ export default function AnalyticsTab({ username, semesterId }: AnalyticsTabProps
     fetchAttendance();
   }, [username, semesterId]);
 
-  const courseAttendanceMap = attendanceRecords.reduce((acc, record) => {
-    if (!acc[record.courseId]) {
-      acc[record.courseId] = {
-        courseName: record.courseName,
-        presentCount: 0,
-        totalCount: 0,
-      };
-    }
-    acc[record.courseId].totalCount += 1;
-    if (record.present) {
-      acc[record.courseId].presentCount += 1;
-    }
-    return acc;
-  }, {} as Record<
-    number,
-    { courseName: string; presentCount: number; totalCount: number }
-  >);
+  const courseAttendanceMap = attendanceRecords.reduce(
+    (acc, record) => {
+      if (!acc[record.courseId]) {
+        acc[record.courseId] = {
+          courseName: record.courseName,
+          presentCount: 0,
+          totalCount: 0,
+        };
+      }
+      acc[record.courseId].totalCount += 1;
+      if (record.present) {
+        acc[record.courseId].presentCount += 1;
+      }
+      return acc;
+    },
+    {} as Record<
+      number,
+      { courseName: string; presentCount: number; totalCount: number }
+    >,
+  );
 
   const labels = Object.values(courseAttendanceMap).map((c) => c.courseName);
-  const dataValues = Object.values(courseAttendanceMap).map(
-    (c) => Math.round((c.presentCount / c.totalCount) * 100)
+  const dataValues = Object.values(courseAttendanceMap).map((c) =>
+    Math.round((c.presentCount / c.totalCount) * 100),
   );
 
   const attendanceData = {
@@ -157,7 +165,9 @@ export default function AnalyticsTab({ username, semesterId }: AnalyticsTabProps
   }
 
   if (attendanceRecords.length === 0) {
-    return <div className="alert alert-info">No attendance data available.</div>;
+    return (
+      <div className="alert alert-info">No attendance data available.</div>
+    );
   }
 
   return (
@@ -166,8 +176,14 @@ export default function AnalyticsTab({ username, semesterId }: AnalyticsTabProps
         <h2 className="card-title">Attendance Analytics</h2>
         {attendanceRecords.length > 0 && (
           <div className="text-sm">
-            Semester: <span className="font-semibold">{attendanceRecords[0].semesterName}</span> | Academic Year:{" "}
-            <span className="font-semibold">{attendanceRecords[0].academicYear}</span>
+            Semester:{" "}
+            <span className="font-semibold">
+              {attendanceRecords[0].semesterName}
+            </span>{" "}
+            | Academic Year:{" "}
+            <span className="font-semibold">
+              {attendanceRecords[0].academicYear}
+            </span>
           </div>
         )}
         <div className="relative h-72 w-full">

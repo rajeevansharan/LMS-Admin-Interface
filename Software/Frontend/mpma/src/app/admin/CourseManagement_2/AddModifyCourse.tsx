@@ -21,20 +21,21 @@ export default function AddModifyCourse() {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const createOrUpdateCourse = async (data: CourseFormData) => {
-    const response = await axios.post("http://localhost:8080/api/courses/create", {
-      ...data,
-      courseId: data.courseId || undefined // Send undefined if null to let backend generate ID
-    });
+    const response = await axios.post(
+      "http://localhost:8080/api/courses/create",
+      {
+        ...data,
+        courseId: data.courseId || undefined, // Send undefined if null to let backend generate ID
+      },
+    );
     return response.data;
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({ 
-      ...prev, 
-      [id]: id === "courseId" ? (value ? parseInt(value) : null) : value 
+    setFormData((prev) => ({
+      ...prev,
+      [id]: id === "courseId" ? (value ? parseInt(value) : null) : value,
     }));
   };
 
@@ -55,10 +56,14 @@ export default function AddModifyCourse() {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
-          setErrorMessage("Course ID already exists. Please use a different ID.");
+          setErrorMessage(
+            "Course ID already exists. Please use a different ID.",
+          );
         } else {
           setErrorMessage(
-            error.response?.data?.message || error.message || "Failed to save course"
+            error.response?.data?.message ||
+              error.message ||
+              "Failed to save course",
           );
         }
       } else {
@@ -72,21 +77,30 @@ export default function AddModifyCourse() {
   return (
     <div className="space-y-6">
       <div className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-800">Course Information</h2>
+        <h2 className="text-xl font-semibold text-gray-800">
+          Course Information
+        </h2>
         <p className="text-sm text-gray-500">Add or modify course details</p>
       </div>
 
       {successMessage && (
-        <div className="p-4 bg-green-50 text-green-700 rounded-md">{successMessage}</div>
+        <div className="p-4 bg-green-50 text-green-700 rounded-md">
+          {successMessage}
+        </div>
       )}
 
       {errorMessage && (
-        <div className="p-4 bg-red-50 text-red-700 rounded-md">{errorMessage}</div>
+        <div className="p-4 bg-red-50 text-red-700 rounded-md">
+          {errorMessage}
+        </div>
       )}
 
       <form className="space-y-6" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="courseId" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="courseId"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Course Code
           </label>
           <input
@@ -97,11 +111,16 @@ export default function AddModifyCourse() {
             value={formData.courseId ?? ""}
             onChange={handleChange}
           />
-          <p className="mt-1 text-sm text-gray-500">Unique identifier for the course (leave empty for new courses)</p>
+          <p className="mt-1 text-sm text-gray-500">
+            Unique identifier for the course (leave empty for new courses)
+          </p>
         </div>
 
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Course Name
           </label>
           <input
@@ -116,7 +135,10 @@ export default function AddModifyCourse() {
         </div>
 
         <div>
-          <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="startDate"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Start Date
           </label>
           <input

@@ -19,7 +19,9 @@ interface DashboardStatus {
 }
 
 const AdminDashboard = () => {
-  const [unassignedCourses, setUnassignedCourses] = useState<SimpleCourse[]>([]);
+  const [unassignedCourses, setUnassignedCourses] = useState<SimpleCourse[]>(
+    [],
+  );
   const [dashboardStatus, setDashboardStatus] = useState<DashboardStatus>({
     activeCourses: 0,
     completedCourses: 0,
@@ -33,7 +35,7 @@ const AdminDashboard = () => {
         setIsLoading(true);
         // Fetch dashboard status
         const statusResponse = await axios.get(
-          "http://localhost:8080/api/adminProfile/adminDashboardStatus"
+          "http://localhost:8080/api/adminProfile/adminDashboardStatus",
         );
         setDashboardStatus({
           activeCourses: statusResponse.data.activeCourses,
@@ -43,7 +45,7 @@ const AdminDashboard = () => {
 
         // Fetch unassigned courses
         const coursesResponse = await axios.get(
-          "http://localhost:8080/api/adminProfile/unassigned-courses"
+          "http://localhost:8080/api/adminProfile/unassigned-courses",
         );
         setUnassignedCourses(coursesResponse.data);
       } catch (error) {
@@ -61,7 +63,7 @@ const AdminDashboard = () => {
   const completionRate =
     activeCourses + completedCourses > 0
       ? Math.round(
-          (completedCourses / (activeCourses + completedCourses)) * 100
+          (completedCourses / (activeCourses + completedCourses)) * 100,
         )
       : 0;
 
@@ -103,7 +105,9 @@ const AdminDashboard = () => {
           >
             <h3 className="text-sm font-medium text-gray-600">{stat.title}</h3>
             <div className="flex items-end justify-between mt-2">
-              <p className={`text-2xl font-semibold ${stat.text}`}>{stat.value}</p>
+              <p className={`text-2xl font-semibold ${stat.text}`}>
+                {stat.value}
+              </p>
               <span>{/* empty to keep layout consistent */}</span>
             </div>
           </div>
@@ -120,7 +124,9 @@ const AdminDashboard = () => {
         {/* Unassigned Courses List */}
         <div className="bg-white rounded-xl shadow-sm p-5">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-gray-800">Unassigned Courses</h2>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Unassigned Courses
+            </h2>
           </div>
 
           {isLoading ? (
@@ -130,8 +136,8 @@ const AdminDashboard = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {unassignedCourses.map((course) => (
-                <AdminCourseCard 
-                  key={course.courseId} 
+                <AdminCourseCard
+                  key={course.courseId}
                   courseId={course.courseId}
                   courseName={course.courseName}
                   startDate={course.startDate}

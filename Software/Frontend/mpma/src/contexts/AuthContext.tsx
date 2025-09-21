@@ -21,7 +21,9 @@ interface AuthContextType {
 
 // ! Core authentication context that provides auth state across the application
 // ! This must wrap any components that need authentication functionality
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined,
+);
 
 // ! Primary authentication provider component
 // ! Handles authentication state management and storage

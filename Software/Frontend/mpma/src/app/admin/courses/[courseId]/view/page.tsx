@@ -30,7 +30,7 @@ export default function CourseDetailsPage() {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `http://localhost:8080/api/adminProfile/unassigned-courses/${courseId}`
+          `http://localhost:8080/api/adminProfile/unassigned-courses/${courseId}`,
         );
         const courseData = response.data;
         setCourse({
@@ -98,14 +98,18 @@ export default function CourseDetailsPage() {
             </div>
 
             <div className="rounded-lg p-5 bg-indigo-50 border border-indigo-200 shadow">
-              <p className="text-sm font-medium text-indigo-600 mb-1">Start Date</p>
+              <p className="text-sm font-medium text-indigo-600 mb-1">
+                Start Date
+              </p>
               <p className="text-lg font-semibold text-indigo-900">
                 {new Date(course.startDate).toLocaleDateString()}
               </p>
             </div>
 
             <div className="rounded-lg p-5 bg-indigo-50 border border-indigo-200 shadow">
-              <p className="text-sm font-medium text-indigo-600 mb-1">End Date</p>
+              <p className="text-sm font-medium text-indigo-600 mb-1">
+                End Date
+              </p>
               <p className="text-lg font-semibold text-indigo-900">
                 {new Date(course.endDate).toLocaleDateString()}
               </p>

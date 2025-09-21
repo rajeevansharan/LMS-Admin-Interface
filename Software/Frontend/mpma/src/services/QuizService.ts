@@ -1,6 +1,6 @@
 // src/services/QuizService.ts
 
-import { Quiz, QuizCreatePayload } from "@/types/Quiz"; 
+import { Quiz, QuizCreatePayload } from "@/types/Quiz";
 import { QuizSubmission } from "@/types/QuizAttempt";
 import { Submission } from "@/types/Submission";
 
@@ -112,16 +112,19 @@ export const QuizService = {
     token: string,
   ): Promise<Submission> => {
     const response = await fetch(`${API_URL}/api/quizzes/${quizId}/submit`, {
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
     });
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("Failed to submit quiz attempt. Server response:", errorText);
+      console.error(
+        "Failed to submit quiz attempt. Server response:",
+        errorText,
+      );
       throw new Error(
         `Failed to submit quiz attempt: ${response.status} ${response.statusText} - ${errorText}`,
       );

@@ -1,8 +1,8 @@
 // src/app/student/quiz/[quizId]/QuestionDisplay.tsx
-'use client';
+"use client";
 
-import { QuestionInfo } from '@/types/Quiz';
-import { StudentAnswer } from '@/types/QuizAttempt';
+import { QuestionInfo } from "@/types/Quiz";
+import { StudentAnswer } from "@/types/QuizAttempt";
 
 interface QuestionDisplayProps {
   question: QuestionInfo;
@@ -10,8 +10,11 @@ interface QuestionDisplayProps {
   onAnswerChange: (answer: StudentAnswer) => void;
 }
 
-const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, answer, onAnswerChange }) => {
-  
+const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
+  question,
+  answer,
+  onAnswerChange,
+}) => {
   const handleSingleChoiceChange = (optionId: number) => {
     onAnswerChange({ questionId: question.id, selectedOptionIds: [optionId] });
   };
@@ -19,12 +22,17 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, answer, onA
   const handleMultiChoiceChange = (optionId: number) => {
     const currentSelection = answer?.selectedOptionIds || [];
     const newSelection = currentSelection.includes(optionId)
-      ? currentSelection.filter(id => id !== optionId)
+      ? currentSelection.filter((id) => id !== optionId)
       : [...currentSelection, optionId];
-    onAnswerChange({ questionId: question.id, selectedOptionIds: newSelection });
+    onAnswerChange({
+      questionId: question.id,
+      selectedOptionIds: newSelection,
+    });
   };
-  
-  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+  const handleTextChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     onAnswerChange({ questionId: question.id, textAnswer: e.target.value });
   };
 
@@ -32,10 +40,13 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, answer, onA
     if (!question.options) return null;
 
     switch (question.questionType) {
-      case 'SINGLE_CHOICE':
-      case 'TRUE_FALSE':
-        return question.options.map(opt => (
-          <div key={opt.id} className="p-2 my-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600">
+      case "SINGLE_CHOICE":
+      case "TRUE_FALSE":
+        return question.options.map((opt) => (
+          <div
+            key={opt.id}
+            className="p-2 my-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="radio"
@@ -49,9 +60,12 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, answer, onA
           </div>
         ));
 
-      case 'MULTIPLE_CHOICE':
-        return question.options.map(opt => (
-          <div key={opt.id} className="p-2 my-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600">
+      case "MULTIPLE_CHOICE":
+        return question.options.map((opt) => (
+          <div
+            key={opt.id}
+            className="p-2 my-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -71,26 +85,30 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ question, answer, onA
   };
 
   const renderInput = () => {
-    switch(question.questionType) {
-        case 'SHORT_ANSWER':
-            return <input 
-                        type="text" 
-                        value={answer?.textAnswer || ''} 
-                        onChange={handleTextChange}
-                        className="w-full p-2 border rounded-md mt-4 dark:bg-gray-800"
-                        placeholder="Type your answer here"
-                    />
-        case 'ESSAY':
-            return <textarea 
-                        value={answer?.textAnswer || ''} 
-                        onChange={handleTextChange}
-                        className="w-full p-2 border rounded-md mt-4 h-40 dark:bg-gray-800"
-                        placeholder="Type your essay here"
-                    />
-        default:
-            return null;
+    switch (question.questionType) {
+      case "SHORT_ANSWER":
+        return (
+          <input
+            type="text"
+            value={answer?.textAnswer || ""}
+            onChange={handleTextChange}
+            className="w-full p-2 border rounded-md mt-4 dark:bg-gray-800"
+            placeholder="Type your answer here"
+          />
+        );
+      case "ESSAY":
+        return (
+          <textarea
+            value={answer?.textAnswer || ""}
+            onChange={handleTextChange}
+            className="w-full p-2 border rounded-md mt-4 h-40 dark:bg-gray-800"
+            placeholder="Type your essay here"
+          />
+        );
+      default:
+        return null;
     }
-  }
+  };
 
   return (
     <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">

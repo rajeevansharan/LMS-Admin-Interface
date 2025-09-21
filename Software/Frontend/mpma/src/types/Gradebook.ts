@@ -10,7 +10,7 @@ export interface ActivityGrade {
 export interface StudentGradebook {
   personId: number;
   studentName: string;
-  studentEmail:string;
+  studentEmail: string;
   grades: ActivityGrade[];
 }
 

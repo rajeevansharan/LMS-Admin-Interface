@@ -55,7 +55,7 @@ const EventModal: React.FC<EventModalProps> = ({
           {editEventId ? "Edit Event" : "Add New Event"}
         </h3>
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-        
+
         {!editEventId && (
           <div className="form-control mb-3">
             <label className="label">Event Type</label>

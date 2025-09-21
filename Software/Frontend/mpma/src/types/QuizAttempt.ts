@@ -12,7 +12,7 @@
 export interface StudentAnswer {
   questionId: number;
   selectedOptionIds?: number[]; // Used for Multiple/Single choice questions
-  textAnswer?: string;          // Used for Short Answer/Essay questions
+  textAnswer?: string; // Used for Short Answer/Essay questions
 }
 
 /**
@@ -22,7 +22,6 @@ export interface StudentAnswer {
 export interface QuizSubmission {
   answers: StudentAnswer[];
 }
-
 
 // ==========================================================
 // Types for REVIEWING a Completed Quiz Attempt

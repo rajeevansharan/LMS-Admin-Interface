@@ -124,4 +124,4 @@ const STHeader = () => {
 // TODO: Implement dropdown menu functionality for mobile view
 // TODO: Replace placeholder profile image with actual user avatar
 // TODO: Connect notification count to real-time data
-export default STHeader;
+export default STHeader;

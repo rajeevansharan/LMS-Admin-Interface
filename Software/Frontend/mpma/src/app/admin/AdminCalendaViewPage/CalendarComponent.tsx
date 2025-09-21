@@ -41,9 +41,13 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
           return classes;
         }}
         tileContent={({ date }) => {
-          const hasDailyEvent = dailyEvents.some((e) => isSameDay(e.date, date));
-          const hasUpcomingEvent = upcomingEvents.some((e) => isSameDay(e.date, date));
-          
+          const hasDailyEvent = dailyEvents.some((e) =>
+            isSameDay(e.date, date),
+          );
+          const hasUpcomingEvent = upcomingEvents.some((e) =>
+            isSameDay(e.date, date),
+          );
+
           if (hasDailyEvent && hasUpcomingEvent) {
             return (
               <div className="flex justify-center mt-1">
@@ -52,9 +56,13 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
               </div>
             );
           } else if (hasDailyEvent) {
-            return <span className="block w-2 h-2 bg-primary rounded-full mx-auto mt-1"></span>;
+            return (
+              <span className="block w-2 h-2 bg-primary rounded-full mx-auto mt-1"></span>
+            );
           } else if (hasUpcomingEvent) {
-            return <span className="block w-2 h-2 bg-blue-400 rounded-full mx-auto mt-1"></span>;
+            return (
+              <span className="block w-2 h-2 bg-blue-400 rounded-full mx-auto mt-1"></span>
+            );
           }
           return null;
         }}

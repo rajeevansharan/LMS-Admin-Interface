@@ -13,7 +13,12 @@ export interface QuestionInfo {
   id: number;
   questionText: string;
   // MODIFIED: Changed to a specific union type for better type-safety in components.
-  questionType: 'TRUE_FALSE' | 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'SHORT_ANSWER' | 'ESSAY';
+  questionType:
+    | "TRUE_FALSE"
+    | "SINGLE_CHOICE"
+    | "MULTIPLE_CHOICE"
+    | "SHORT_ANSWER"
+    | "ESSAY";
   marks: number;
   // ADDED: This is the most crucial change. It allows us to receive and display the options for a question.
   options: Option[] | null;

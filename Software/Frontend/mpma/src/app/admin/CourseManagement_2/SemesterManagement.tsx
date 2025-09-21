@@ -90,51 +90,52 @@ export default function SemesterManagement() {
     }));
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  try {
-    if (currentSemester) {
-      // Update existing semester
-      await axios.put(
-        `http://localhost:8080/api/semesters/${currentSemester.semesterId}`,
-        formData
-      );
-      toast.success("Semester updated successfully");
-    } else {
-      // Create new semester
-      await axios.post("http://localhost:8080/api/semesters", formData);
-      toast.success("Semester created successfully");
-    }
-
-    fetchSemesters();
-    setShowEditModal(false);
-    setShowCreateModal(false);
-    setError(null);
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      const status = err.response?.status;
-      const data = err.response?.data;
-
-      // Handle backend error responses
-      if (status === 409 && data?.type === "SemesterAlreadyExists") {
-        toast.error(data.message); // "Semester with ID '...' already exists."
-      } else if (status === 400 && data?.type === "CourseNotFound") {
-        toast.error(data.message); // specific course not found message
-      } else if (status === 500) {
-        toast.error("Server error occurred. Please try again.");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (currentSemester) {
+        // Update existing semester
+        await axios.put(
+          `http://localhost:8080/api/semesters/${currentSemester.semesterId}`,
+          formData,
+        );
+        toast.success("Semester updated successfully");
       } else {
-        toast.error(data?.message || "An error occurred while submitting the form.");
-      } 
-    } else {
-      toast.error("An unexpected error occurred.");
-    }
+        // Create new semester
+        await axios.post("http://localhost:8080/api/semesters", formData);
+        toast.success("Semester created successfully");
+      }
 
-    if (process.env.NODE_ENV === "development") {
-      console.error("Submit error:", err);
-    }
-  }
-};
+      fetchSemesters();
+      setShowEditModal(false);
+      setShowCreateModal(false);
+      setError(null);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status;
+        const data = err.response?.data;
 
+        // Handle backend error responses
+        if (status === 409 && data?.type === "SemesterAlreadyExists") {
+          toast.error(data.message); // "Semester with ID '...' already exists."
+        } else if (status === 400 && data?.type === "CourseNotFound") {
+          toast.error(data.message); // specific course not found message
+        } else if (status === 500) {
+          toast.error("Server error occurred. Please try again.");
+        } else {
+          toast.error(
+            data?.message || "An error occurred while submitting the form.",
+          );
+        }
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
+
+      if (process.env.NODE_ENV === "development") {
+        console.error("Submit error:", err);
+      }
+    }
+  };
 
   if (isLoading) {
     return (
@@ -282,9 +283,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               </div>
               <div className="form-control w-full">
                 <label className="label">
-                  <span className="label-text">
-                    Course ID
-                  </span>
+                  <span className="label-text">Course ID</span>
                 </label>
                 <input
                   type="text"
@@ -358,9 +357,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               </div>
               <div className="form-control w-full">
                 <label className="label">
-                  <span className="label-text">
-                    Course ID
-                  </span>
+                  <span className="label-text">Course ID</span>
                 </label>
                 <input
                   type="text"

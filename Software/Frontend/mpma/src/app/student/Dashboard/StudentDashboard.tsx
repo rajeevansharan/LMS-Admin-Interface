@@ -4,7 +4,13 @@ import StudentProfileSummary from "./StudentProfileSummary";
 import AttendanceSummaryWidget from "./AttendanceSummaryWidget";
 import AnalyticsTab from "./AnalyticsTab";
 
-export default function StudentDashboard({ username, semesterId }: { username: string; semesterId: string | number }) {
+export default function StudentDashboard({
+  username,
+  semesterId,
+}: {
+  username: string;
+  semesterId: string | number;
+}) {
   const [showDetails, setShowDetails] = useState(false);
 
   return (
@@ -12,7 +18,7 @@ export default function StudentDashboard({ username, semesterId }: { username: s
       <div className="prose max-w-none mb-6">
         <h1 className="text-3xl font-bold">Student Dashboard</h1>
       </div>
-      
+
       {!showDetails ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">

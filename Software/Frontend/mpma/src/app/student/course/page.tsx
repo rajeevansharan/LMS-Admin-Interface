@@ -208,8 +208,14 @@ const StudentCoursePageComponent: React.FC = () => {
   };
 
   // --- RENDER LOGIC ---
-  if (loading) return <div className="flex justify-center items-center h-screen"><span className="loading loading-spinner loading-lg"></span></div>;
-  if (error) return <div className="text-center p-12 text-red-500">{error}</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  if (error)
+    return <div className="text-center p-12 text-red-500">{error}</div>;
   if (!course) return <div className="text-center p-12">Course not found.</div>;
 
   // Navigation buttons for students
@@ -252,7 +258,7 @@ const StudentCoursePageComponent: React.FC = () => {
             courseId={Number(courseId)}
             // ===================================================================
             onContentAction={(action, contentId) => {
-              if (action === 'click') {
+              if (action === "click") {
                 handleContentClick(section.name, contentId);
               }
             }}
@@ -265,13 +271,15 @@ const StudentCoursePageComponent: React.FC = () => {
 
 // Wrapper component with Suspense for Next.js App Router
 const StudentCoursePage = () => (
-    <Suspense fallback={
-        <div className="flex justify-center items-center h-screen">
-            <span className="loading loading-spinner loading-lg"></span>
-        </div>
-    }>
-        <StudentCoursePageComponent />
-    </Suspense>
+  <Suspense
+    fallback={
+      <div className="flex justify-center items-center h-screen">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    }
+  >
+    <StudentCoursePageComponent />
+  </Suspense>
 );
 
 export default StudentCoursePage;

@@ -29,15 +29,19 @@ export default function AssignLecturer() {
     setSuccessMessage("");
 
     try {
-      await axios.post("http://localhost:8080/api/courses/assign-lecturer", {
-        lecturerId: formData.lecturerId,
-        courseId: formData.assignCourseId,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      await axios.post(
+        "http://localhost:8080/api/courses/assign-lecturer",
+        {
+          lecturerId: formData.lecturerId,
+          courseId: formData.assignCourseId,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
 
       setSuccessMessage("Lecturer assigned successfully!");
       setFormData({
@@ -47,9 +51,9 @@ export default function AssignLecturer() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setErrorMessage(
-          error.response?.data?.message || 
-          error.message || 
-          "Failed to assign lecturer"
+          error.response?.data?.message ||
+            error.message ||
+            "Failed to assign lecturer",
         );
       } else {
         setErrorMessage("An unexpected error occurred");

@@ -14,7 +14,9 @@ interface StudentProfileSummaryProps {
   username: string;
 }
 
-export default function StudentProfileSummary({ username }: StudentProfileSummaryProps) {
+export default function StudentProfileSummary({
+  username,
+}: StudentProfileSummaryProps) {
   const [studentData, setStudentData] = useState<StudentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,12 +27,12 @@ export default function StudentProfileSummary({ username }: StudentProfileSummar
       setError(null);
       try {
         const response = await axios.get<StudentData>(
-          `http://localhost:8080/api/students/username/${username}`
+          `http://localhost:8080/api/students/username/${username}`,
         );
         setStudentData(response.data);
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Failed to load student data."
+          err instanceof Error ? err.message : "Failed to load student data.",
         );
       } finally {
         setLoading(false);
@@ -41,7 +43,8 @@ export default function StudentProfileSummary({ username }: StudentProfileSummar
 
   if (loading) return <div className="skeleton w-full h-64"></div>;
   if (error) return <div className="alert alert-error">{error}</div>;
-  if (!studentData) return <div className="alert alert-warning">No profile found.</div>;
+  if (!studentData)
+    return <div className="alert alert-warning">No profile found.</div>;
 
   return (
     <div className="card bg-base-100 shadow">

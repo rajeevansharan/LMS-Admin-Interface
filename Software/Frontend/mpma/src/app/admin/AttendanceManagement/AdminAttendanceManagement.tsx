@@ -14,7 +14,9 @@ const AdminAttendanceManagement: React.FC = () => {
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
   const [courseInput, setCourseInput] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>("");
-  const [attendance, setAttendance] = useState<Record<string, AttendanceStatus>>({});
+  const [attendance, setAttendance] = useState<
+    Record<string, AttendanceStatus>
+  >({});
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -40,7 +42,7 @@ const AdminAttendanceManagement: React.FC = () => {
   useEffect(() => {
     if (selectAll) {
       const updated = Object.fromEntries(
-        students.map((s) => [s.id, "Present" as AttendanceStatus])
+        students.map((s) => [s.id, "Present" as AttendanceStatus]),
       );
       setAttendance(updated);
     }
@@ -49,18 +51,21 @@ const AdminAttendanceManagement: React.FC = () => {
   useEffect(() => {
     const q = searchQuery.toLowerCase();
     const filtered = students.filter(
-      (s) => s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q)
+      (s) => s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q),
     );
     setFilteredStudents(filtered);
   }, [searchQuery, students]);
 
-  const handleStatusChange = (studentId: string, status: AttendanceStatus): void => {
+  const handleStatusChange = (
+    studentId: string,
+    status: AttendanceStatus,
+  ): void => {
     setAttendance((prev) => ({ ...prev, [studentId]: status }));
   };
 
   const handleClearAll = () => {
     const cleared = Object.fromEntries(
-      students.map((s) => [s.id, "" as AttendanceStatus])
+      students.map((s) => [s.id, "" as AttendanceStatus]),
     );
     setAttendance(cleared);
     setSelectAll(false);
@@ -81,8 +86,12 @@ const AdminAttendanceManagement: React.FC = () => {
     toast.success("Attendance submitted successfully!");
   };
 
-  const totalPresent = Object.values(attendance).filter((s) => s === "Present").length;
-  const totalAbsent = Object.values(attendance).filter((s) => s === "Absent").length;
+  const totalPresent = Object.values(attendance).filter(
+    (s) => s === "Present",
+  ).length;
+  const totalAbsent = Object.values(attendance).filter(
+    (s) => s === "Absent",
+  ).length;
 
   return (
     <div className="card bg-base-100 shadow-lg">
@@ -168,7 +177,8 @@ const AdminAttendanceManagement: React.FC = () => {
         {courseInput && (
           <>
             <div className="text-sm mb-4">
-              <span className="font-semibold">Present:</span> {totalPresent} / {filteredStudents.length} | 
+              <span className="font-semibold">Present:</span> {totalPresent} /{" "}
+              {filteredStudents.length} |
               <span className="font-semibold"> Absent:</span> {totalAbsent}
             </div>
 
@@ -212,7 +222,7 @@ const AdminAttendanceManagement: React.FC = () => {
                             onChange={(e) =>
                               handleStatusChange(
                                 student.id,
-                                e.target.value as AttendanceStatus
+                                e.target.value as AttendanceStatus,
                               )
                             }
                             className="select select-bordered select-sm w-full max-w-xs"
@@ -236,7 +246,9 @@ const AdminAttendanceManagement: React.FC = () => {
             type="button"
             className="btn btn-primary"
             onClick={handleSubmit}
-            disabled={!courseInput || filteredStudents.length === 0 || !selectedDate}
+            disabled={
+              !courseInput || filteredStudents.length === 0 || !selectedDate
+            }
           >
             Submit Attendance
           </button>

@@ -24,9 +24,12 @@ export default function EnrollStudents() {
     status: "ACTIVE",
   });
 
-  const [enrolledStudent, setEnrolledStudent] = useState<ManualEnrollmentForm | null>(null);
+  const [enrolledStudent, setEnrolledStudent] =
+    useState<ManualEnrollmentForm | null>(null);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { id, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -47,13 +50,16 @@ export default function EnrollStudents() {
     setEnrolledStudent(null);
 
     try {
-      const response = await axios.post("http://localhost:8080/api/enrollments", {
-        studentId: formData.studentId,
-        courseId: formData.courseId,
-        semesterId: parseInt(formData.semesterId),
-        batch: formData.batch,
-        status: formData.status,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/api/enrollments",
+        {
+          studentId: formData.studentId,
+          courseId: formData.courseId,
+          semesterId: parseInt(formData.semesterId),
+          batch: formData.batch,
+          status: formData.status,
+        },
+      );
 
       setSuccessMessage("Student enrolled successfully!");
       setEnrolledStudent(response.data);
@@ -70,14 +76,16 @@ export default function EnrollStudents() {
           const status = error.response.status;
           const message = error.response.data;
           if (status === 404) {
-            setErrorMessage(message); 
+            setErrorMessage(message);
           } else if (status === 400) {
-            setErrorMessage(message); 
+            setErrorMessage(message);
           } else {
             setErrorMessage("Enrollment failed: " + message);
           }
         } else {
-          setErrorMessage("Enrollment failed - please check your inputs and try again");
+          setErrorMessage(
+            "Enrollment failed - please check your inputs and try again",
+          );
         }
       } else {
         setErrorMessage("Enrollment failed due to an unknown error");
@@ -90,7 +98,9 @@ export default function EnrollStudents() {
   return (
     <div className="space-y-6">
       <div className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-800">Student Enrollment</h2>
+        <h2 className="text-xl font-semibold text-gray-800">
+          Student Enrollment
+        </h2>
         <p className="text-sm text-gray-500">Enroll a student for a course</p>
       </div>
 
@@ -100,7 +110,9 @@ export default function EnrollStudents() {
         </div>
       )}
       {errorMessage && (
-        <div className="p-4 bg-red-50 text-red-700 rounded-md shadow-sm">{errorMessage}</div>
+        <div className="p-4 bg-red-50 text-red-700 rounded-md shadow-sm">
+          {errorMessage}
+        </div>
       )}
 
       {enrolledStudent && (

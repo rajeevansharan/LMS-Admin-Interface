@@ -6,14 +6,19 @@ import Link from "next/link";
 import { FaSearch, FaPlus } from "react-icons/fa";
 import { FiInfo } from "react-icons/fi";
 import AdminCourseCard from "./AdminCourseCard";
-import { BackendCourseCard, FrontendCourseCard, SemesterBatchInfo } from "./types/course";
+import {
+  BackendCourseCard,
+  FrontendCourseCard,
+  SemesterBatchInfo,
+} from "./types/course";
 
 export default function AdminCourseView(): React.ReactElement {
   const [courses, setCourses] = useState<FrontendCourseCard[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [semesterId, setSemesterId] = useState("");
   const [batch, setBatch] = useState("");
-  const [semesterBatchInfo, setSemesterBatchInfo] = useState<SemesterBatchInfo | null>(null);
+  const [semesterBatchInfo, setSemesterBatchInfo] =
+    useState<SemesterBatchInfo | null>(null);
   const [selectedSemester, setSelectedSemester] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +27,7 @@ export default function AdminCourseView(): React.ReactElement {
     const fetchSemesterBatchInfo = async () => {
       try {
         const response = await axios.get<SemesterBatchInfo>(
-          "http://localhost:8080/api/helper/semester-and-batch-info"
+          "http://localhost:8080/api/helper/semester-and-batch-info",
         );
         setSemesterBatchInfo(response.data);
       } catch (error) {
@@ -155,9 +160,7 @@ export default function AdminCourseView(): React.ReactElement {
           <div className="flex justify-center items-center h-64">
             <div className="alert alert-info">
               <FiInfo className="text-xl" />
-              <span>
-                Please select both semester and batch to view courses
-              </span>
+              <span>Please select both semester and batch to view courses</span>
             </div>
           </div>
         ) : isLoading ? (
@@ -183,4 +186,4 @@ export default function AdminCourseView(): React.ReactElement {
       </div>
     </div>
   );
-}  
+}

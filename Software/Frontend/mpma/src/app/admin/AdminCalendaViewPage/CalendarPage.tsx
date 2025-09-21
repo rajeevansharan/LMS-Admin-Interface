@@ -1,12 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  FaRegCalendarAlt,
-  FaPlus,
-  FaSpinner,
-  FaCheck,
-} from "react-icons/fa";
+import { FaRegCalendarAlt, FaPlus, FaSpinner, FaCheck } from "react-icons/fa";
 import CalendarComponent from "./CalendarComponent";
 import DailyEventsList from "./DailyEventsList";
 import EventModal from "./EventModal";
@@ -19,8 +14,11 @@ const CalendarPage = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [dailyEvents, setDailyEvents] = useState<Event[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
-  const [selectedUpcomingEvent, setSelectedUpcomingEvent] = useState<Event | null>(null);
-  const [selectedDailyEvent, setSelectedDailyEvent] = useState<Event | null>(null);
+  const [selectedUpcomingEvent, setSelectedUpcomingEvent] =
+    useState<Event | null>(null);
+  const [selectedDailyEvent, setSelectedDailyEvent] = useState<Event | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -33,7 +31,7 @@ const CalendarPage = () => {
     type: "course",
     semesterId: "",
     batch: "",
-    courseId: ""
+    courseId: "",
   });
   const [editEventId, setEditEventId] = useState<number | null>(null);
   const [filters, setFilters] = useState({
@@ -42,13 +40,14 @@ const CalendarPage = () => {
     batch: "",
   });
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [semesterBatchInfo, setSemesterBatchInfo] = useState<SemesterBatchInfo | null>(null);
+  const [semesterBatchInfo, setSemesterBatchInfo] =
+    useState<SemesterBatchInfo | null>(null);
 
   useEffect(() => {
     const fetchSemesterBatchInfo = async () => {
       try {
         const response = await axios.get<SemesterBatchInfo>(
-          "http://localhost:8080/api/helper/semester-and-batch-info"
+          "http://localhost:8080/api/helper/semester-and-batch-info",
         );
         setSemesterBatchInfo(response.data);
       } catch (err) {
@@ -67,7 +66,7 @@ const CalendarPage = () => {
     setError("");
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/events/upcoming/basic/${academicYear}/${semesterId}/${batch}`
+        `http://localhost:8080/api/events/upcoming/basic/${academicYear}/${semesterId}/${batch}`,
       );
       const events = response.data.map((event: Event) => ({
         id: event.id,
@@ -81,7 +80,7 @@ const CalendarPage = () => {
         courseId: event.courseId,
         courseName: event.courseName,
         semesterName: event.semesterName,
-        academicYear: event.academicYear
+        academicYear: event.academicYear,
       }));
       setUpcomingEvents(events);
       setSelectedUpcomingEvent(null);
@@ -93,12 +92,15 @@ const CalendarPage = () => {
     }
   };
 
-  const fetchEventDetails = async (eventId: number, isUpcoming: boolean = false) => {
+  const fetchEventDetails = async (
+    eventId: number,
+    isUpcoming: boolean = false,
+  ) => {
     setIsLoading(true);
     setError("");
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/events/details/${eventId}`
+        `http://localhost:8080/api/events/details/${eventId}`,
       );
       const eventDetails = response.data;
       const detailedEvent = {
@@ -113,9 +115,9 @@ const CalendarPage = () => {
         courseId: eventDetails.courseId,
         courseName: eventDetails.courseName,
         semesterName: eventDetails.semesterName,
-        academicYear: eventDetails.academicYear
+        academicYear: eventDetails.academicYear,
       };
-      
+
       if (isUpcoming) {
         setSelectedUpcomingEvent(detailedEvent);
       } else {
@@ -134,13 +136,13 @@ const CalendarPage = () => {
     if (!selectedDate) return;
     const { academicYear, semesterId, batch } = filters;
     if (!academicYear || !semesterId || !batch) return;
-    
+
     setIsLoading(true);
     setError("");
     try {
       const dateStr = selectedDate.toLocaleDateString("en-CA");
       const response = await axios.get(
-        `http://localhost:8080/api/events/date/basic/${academicYear}/${semesterId}/${batch}/${dateStr}`
+        `http://localhost:8080/api/events/date/basic/${academicYear}/${semesterId}/${batch}/${dateStr}`,
       );
       setDailyEvents(
         response.data.map((event: Event) => ({
@@ -155,15 +157,15 @@ const CalendarPage = () => {
           courseId: event.courseId,
           courseName: event.courseName,
           semesterName: event.semesterName,
-          academicYear: event.academicYear
-        }))
+          academicYear: event.academicYear,
+        })),
       );
     } catch (err) {
       setError("Failed to fetch events for selected date");
       console.error(err);
     } finally {
       setIsLoading(false);
-    } 
+    }
   };
 
   const refreshAllData = async () => {
@@ -196,32 +198,34 @@ const CalendarPage = () => {
         description: newEvent.description,
         createdBy: newEvent.createdBy,
         date: dateStr,
-        batch: newEvent.batch
+        batch: newEvent.batch,
       };
 
       if (editEventId) {
-        const url = newEvent.type === "course" 
-          ? `http://localhost:8080/api/events/course/${editEventId}`
-          : `http://localhost:8080/api/events/batch/${editEventId}`;
-        
+        const url =
+          newEvent.type === "course"
+            ? `http://localhost:8080/api/events/course/${editEventId}`
+            : `http://localhost:8080/api/events/batch/${editEventId}`;
+
         await axios.put(url, {
           ...payload,
-          ...(newEvent.type === "course" && { 
+          ...(newEvent.type === "course" && {
             semesterId: newEvent.semesterId,
-            courseId: newEvent.courseId
-          })
+            courseId: newEvent.courseId,
+          }),
         });
       } else {
-        const url = newEvent.type === "course" 
-          ? "http://localhost:8080/api/events/course"
-          : "http://localhost:8080/api/events/batch";
-        
+        const url =
+          newEvent.type === "course"
+            ? "http://localhost:8080/api/events/course"
+            : "http://localhost:8080/api/events/batch";
+
         await axios.post(url, {
           ...payload,
-          ...(newEvent.type === "course" && { 
+          ...(newEvent.type === "course" && {
             semesterId: newEvent.semesterId,
-            courseId: newEvent.courseId
-          })
+            courseId: newEvent.courseId,
+          }),
         });
       }
 
@@ -233,7 +237,7 @@ const CalendarPage = () => {
         type: "course",
         semesterId: "",
         batch: "",
-        courseId: ""
+        courseId: "",
       });
       setShowModal(false);
       await refreshAllData();
@@ -268,7 +272,7 @@ const CalendarPage = () => {
       type: eventType,
       semesterId: event.semesterId || "",
       batch: event.batch || "",
-      courseId: event.courseId || ""
+      courseId: event.courseId || "",
     });
     setSelectedDate(new Date(event.date));
     setEditEventId(event.id || null);
@@ -280,7 +284,7 @@ const CalendarPage = () => {
   }, [selectedDate]);
 
   const filteredUpcoming = upcomingEvents.filter((event) =>
-    event.title.toLowerCase().includes(searchTerm.toLowerCase())
+    event.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -297,9 +301,9 @@ const CalendarPage = () => {
               className="btn btn-primary gap-2"
               onClick={handleConfirm}
               disabled={
-                isLoading || 
-                !filters.academicYear || 
-                !filters.semesterId || 
+                isLoading ||
+                !filters.academicYear ||
+                !filters.semesterId ||
                 !filters.batch
               }
             >
@@ -370,19 +374,20 @@ const CalendarPage = () => {
               </div>
             </div>
 
-            {showEventDetail && (selectedDailyEvent || selectedUpcomingEvent) && (
-              <div className="mt-8">
-                <EventDetailView
-                  event={selectedDailyEvent || selectedUpcomingEvent!}
-                  onEditClick={(event) => {
-                    handleEditClick(event);
-                    setShowEventDetail(false);
-                  }}
-                  onDeleteClick={deleteEvent}
-                  onClose={() => setShowEventDetail(false)}
-                />
-              </div>
-            )}
+            {showEventDetail &&
+              (selectedDailyEvent || selectedUpcomingEvent) && (
+                <div className="mt-8">
+                  <EventDetailView
+                    event={selectedDailyEvent || selectedUpcomingEvent!}
+                    onEditClick={(event) => {
+                      handleEditClick(event);
+                      setShowEventDetail(false);
+                    }}
+                    onDeleteClick={deleteEvent}
+                    onClose={() => setShowEventDetail(false)}
+                  />
+                </div>
+              )}
           </>
         )}
       </div>
@@ -404,7 +409,7 @@ const CalendarPage = () => {
             type: "course",
             semesterId: "",
             batch: "",
-            courseId: ""
+            courseId: "",
           });
           setEditEventId(null);
         }}
@@ -421,9 +426,7 @@ const CalendarPage = () => {
         }
         onBatchChange={(batch) => setNewEvent({ ...newEvent, batch })}
         onCourseIdChange={(courseId) => setNewEvent({ ...newEvent, courseId })}
-        onDateChange={(date) =>
-          setSelectedDate(new Date(date + "T00:00:00"))
-        }
+        onDateChange={(date) => setSelectedDate(new Date(date + "T00:00:00"))}
         onSubmit={addEvent}
       />
     </main>

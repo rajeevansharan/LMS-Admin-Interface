@@ -8,10 +8,7 @@ import StudentTab from "./StudentTab";
 export default function AdminAttendanceDashboard() {
   const [activeTab, setActiveTab] = useState("course");
 
-  const tabList = [
-    "course",
-    "student",
-  ];
+  const tabList = ["course", "student"];
 
   return (
     <div className="p-6 bg-base-100 min-h-screen">
@@ -22,7 +19,11 @@ export default function AdminAttendanceDashboard() {
 
         <div className="card bg-base-200 shadow-xl mb-8">
           <div className="card-body p-6">
-            <Tabs tabs={tabList} activeTab={activeTab} onTabChange={setActiveTab} />
+            <Tabs
+              tabs={tabList}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
 
             <div className="mt-6">
               {activeTab === "course" && <CourseTab />}

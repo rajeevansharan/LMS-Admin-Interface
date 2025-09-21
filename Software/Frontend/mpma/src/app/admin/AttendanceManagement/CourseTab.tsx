@@ -45,12 +45,12 @@ export default function CourseTab() {
       setSubmitted(true);
 
       const response = await axios.get(
-        `http://localhost:8080/api/attendance/semester/${semesterId}/batch/${batch}/date/${selectedDate}`
+        `http://localhost:8080/api/attendance/semester/${semesterId}/batch/${batch}/date/${selectedDate}`,
       );
 
       // Transform the data to get unique courses with attendance stats
       const courseMap = new Map<string, CourseAttendance>();
-      
+
       response.data.forEach((item: CourseAttendance) => {
         const uniqueKey = `${item.courseId}-${item.semesterId}-${batch}`;
         if (!courseMap.has(uniqueKey)) {
@@ -62,7 +62,7 @@ export default function CourseTab() {
             totalEnrolled: item.totalEnrolled,
             presentCount: item.presentCount,
             absentCount: item.absentCount,
-            attendancePercentage: item.attendancePercentage
+            attendancePercentage: item.attendancePercentage,
           });
         }
       });
@@ -85,7 +85,7 @@ export default function CourseTab() {
   const filteredCourses = courses.filter(
     (course) =>
       course.courseName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      `CODE${course.courseId}`.toLowerCase().includes(searchTerm.toLowerCase())
+      `CODE${course.courseId}`.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const getAttendanceColor = (percentage: number) => {
@@ -188,7 +188,8 @@ export default function CourseTab() {
             <div className="alert alert-warning">
               <FaExclamationTriangle />
               <span>
-                Please enter Semester ID, Batch, and Date, then click Get Attendance to view records
+                Please enter Semester ID, Batch, and Date, then click Get
+                Attendance to view records
               </span>
             </div>
           )
@@ -226,11 +227,16 @@ export default function CourseTab() {
                 </thead>
                 <tbody>
                   {filteredCourses.map((course, index) => (
-                    <tr key={`${course.courseId}-${course.semesterId}-${batch}-${index}`} className="hover:bg-gray-50">
+                    <tr
+                      key={`${course.courseId}-${course.semesterId}-${batch}-${index}`}
+                      className="hover:bg-gray-50"
+                    >
                       <td>{course.semesterId}</td>
                       <td className="font-medium">CODE{course.courseId}</td>
                       <td>{course.courseName}</td>
-                      <td className={`font-medium ${getAttendanceColor(course.attendancePercentage)}`}>
+                      <td
+                        className={`font-medium ${getAttendanceColor(course.attendancePercentage)}`}
+                      >
                         {course.attendancePercentage.toFixed(1)}%
                       </td>
                       <td>{course.presentCount}</td>

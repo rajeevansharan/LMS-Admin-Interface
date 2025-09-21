@@ -223,7 +223,6 @@ const StudentTab: React.FC = () => {
         >
           Confirm
         </button>
-  
       </div>
 
       {shouldShowTable && (

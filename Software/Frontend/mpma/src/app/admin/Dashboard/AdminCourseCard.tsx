@@ -24,7 +24,9 @@ const AdminCourseCard: React.FC<CourseResponse> = ({
 
         <div className="space-y-2 text-sm mt-2">
           <div className="flex items-center gap-2">
-            <span className={`badge ${status === "Active" ? "badge-success" : "badge-neutral"}`}>
+            <span
+              className={`badge ${status === "Active" ? "badge-success" : "badge-neutral"}`}
+            >
               {status}
             </span>
           </div>
@@ -32,9 +34,9 @@ const AdminCourseCard: React.FC<CourseResponse> = ({
           <div className="flex items-center gap-2 bg-amber-50 rounded-lg p-2">
             <FaCalendarAlt className="text-amber-600 w-3 h-3" />
             <span className="font-medium text-amber-700">
-              {new Date(startDate).toLocaleDateString('en-US', { 
-                month: 'short', 
-                year: 'numeric' 
+              {new Date(startDate).toLocaleDateString("en-US", {
+                month: "short",
+                year: "numeric",
               })}
             </span>
           </div>
@@ -42,8 +44,8 @@ const AdminCourseCard: React.FC<CourseResponse> = ({
 
         {/* Action Button */}
         <div className="card-actions justify-end mt-4">
-          <Link 
-            href={`/admin/courses/${courseId}/view`} 
+          <Link
+            href={`/admin/courses/${courseId}/view`}
             className="btn btn-sm btn-primary flex items-center gap-1"
           >
             <FaEye className="w-3 h-3" />

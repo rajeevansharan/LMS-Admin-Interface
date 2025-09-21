@@ -1,6 +1,13 @@
 import React from "react";
 import { Event } from "./types/event";
-import { FaCalendarAlt, FaUser, FaInfoCircle, FaClipboard, FaEdit, FaTrashAlt } from "react-icons/fa";
+import {
+  FaCalendarAlt,
+  FaUser,
+  FaInfoCircle,
+  FaClipboard,
+  FaEdit,
+  FaTrashAlt,
+} from "react-icons/fa";
 
 interface Props {
   event: Event;
@@ -9,7 +16,12 @@ interface Props {
   onClose?: () => void;
 }
 
-const EventDetailView: React.FC<Props> = ({ event, onEditClick, onDeleteClick, onClose }) => {
+const EventDetailView: React.FC<Props> = ({
+  event,
+  onEditClick,
+  onDeleteClick,
+  onClose,
+}) => {
   return (
     <div className="card bg-base-100 shadow-xl p-6 border border-gray-200">
       <div className="flex justify-between items-start mb-4">
@@ -22,7 +34,7 @@ const EventDetailView: React.FC<Props> = ({ event, onEditClick, onDeleteClick, o
           </button>
         )}
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
         <div>
           <h3 className="font-semibold">Title</h3>
@@ -42,7 +54,11 @@ const EventDetailView: React.FC<Props> = ({ event, onEditClick, onDeleteClick, o
         </div>
         <div>
           <h3 className="font-semibold">Event Type</h3>
-          <p>{event.eventType === "COURSE_EVENT" ? "Course Event" : "Batch Event"}</p>
+          <p>
+            {event.eventType === "COURSE_EVENT"
+              ? "Course Event"
+              : "Batch Event"}
+          </p>
         </div>
         {event.description && (
           <div className="md:col-span-2">
@@ -56,11 +72,15 @@ const EventDetailView: React.FC<Props> = ({ event, onEditClick, onDeleteClick, o
           <>
             <div>
               <h3 className="font-semibold">Course</h3>
-              <p>{event.courseName} (ID: {event.courseId})</p>
+              <p>
+                {event.courseName} (ID: {event.courseId})
+              </p>
             </div>
             <div>
               <h3 className="font-semibold">Semester</h3>
-              <p>{event.semesterName} (ID: {event.semesterId})</p>
+              <p>
+                {event.semesterName} (ID: {event.semesterId})
+              </p>
             </div>
             <div>
               <h3 className="font-semibold">Academic Year</h3>
@@ -75,14 +95,16 @@ const EventDetailView: React.FC<Props> = ({ event, onEditClick, onDeleteClick, o
       </div>
 
       <div className="flex justify-end gap-2 mt-6">
-        <button 
+        <button
           onClick={() => onEditClick(event)}
           className="btn btn-primary gap-2"
         >
           <FaEdit /> Edit Event
         </button>
-        <button 
-          onClick={() => event.id !== undefined ? onDeleteClick(event.id) : null}
+        <button
+          onClick={() =>
+            event.id !== undefined ? onDeleteClick(event.id) : null
+          }
           className="btn btn-error gap-2"
         >
           <FaTrashAlt /> Delete Event

@@ -13,9 +13,12 @@ const getSubmissionsByActivityId = async (
   activityId: string,
   token: string,
 ): Promise<Submission[]> => {
-  const response = await fetch(`${API_URL}/api/submissions/activity/${activityId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await fetch(
+    `${API_URL}/api/submissions/activity/${activityId}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
   if (!response.ok) throw new Error("Failed to fetch submissions");
   return response.json();
 };
@@ -24,7 +27,8 @@ const gradeSubmission = async (
   submissionId: number,
   payload: GradeSubmissionPayload,
   token: string,
-): Promise<Submission> => { // Added return type for consistency
+): Promise<Submission> => {
+  // Added return type for consistency
   const response = await fetch(`${API_URL}/api/submissions/${submissionId}`, {
     method: "PUT",
     headers: {
@@ -37,10 +41,17 @@ const gradeSubmission = async (
   return response.json();
 };
 
-const getQuizAttemptDetails = async (submissionId: number, token: string): Promise<QuizAttemptDetail> => { // Added return type
-  const response = await fetch(`${API_URL}/api/submissions/${submissionId}/review`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+const getQuizAttemptDetails = async (
+  submissionId: number,
+  token: string,
+): Promise<QuizAttemptDetail> => {
+  // Added return type
+  const response = await fetch(
+    `${API_URL}/api/submissions/${submissionId}/review`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
   if (!response.ok) throw new Error("Failed to fetch quiz details");
   return response.json();
 };
@@ -66,7 +77,9 @@ const submitAssignment = async (
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Failed to submit assignment: ${response.statusText} - ${errorText}`);
+    throw new Error(
+      `Failed to submit assignment: ${response.statusText} - ${errorText}`,
+    );
   }
 
   return response.json();
@@ -87,22 +100,23 @@ const submitQuizAttempt = async (
   token: string,
 ): Promise<Submission> => {
   const response = await fetch(`${API_URL}/api/quizzes/${quizId}/submit`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Failed to submit quiz: ${response.statusText} - ${errorText}`);
+    throw new Error(
+      `Failed to submit quiz: ${response.statusText} - ${errorText}`,
+    );
   }
 
   return response.json();
 };
-
 
 // --- EXPORTING ALL METHODS TOGETHER ---
 

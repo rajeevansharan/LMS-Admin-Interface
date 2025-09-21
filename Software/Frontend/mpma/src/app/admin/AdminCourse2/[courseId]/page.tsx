@@ -27,7 +27,7 @@ export default function Page() {
 
       try {
         const response = await axios.get<BackendCourseDetails>(
-          `http://localhost:8080/api/enrollments/admin/course/${courseId}/semester/${semesterId}/batch/${batch}`
+          `http://localhost:8080/api/enrollments/admin/course/${courseId}/semester/${semesterId}/batch/${batch}`,
         );
         console.log("Students data:", response.data.students);
         setCourse(response.data);

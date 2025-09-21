@@ -35,7 +35,7 @@ const DailyEventsList: React.FC<DailyEventsListProps> = ({
             >
               <div className="font-semibold flex justify-between">
                 {event.title}
-                <button 
+                <button
                   onClick={() => onViewDetails(event)}
                   className="btn btn-sm btn-ghost"
                 >

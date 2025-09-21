@@ -3,10 +3,10 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '8080',
-        pathname: '/api/courseView/images/**',
+        protocol: "http",
+        hostname: "localhost",
+        port: "8080",
+        pathname: "/api/courseView/images/**",
       },
     ],
   },

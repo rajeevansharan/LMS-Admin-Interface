@@ -45,4 +45,3 @@ const AdminCourseCard: React.FC<FrontendCourseCard> = ({
 };
 
 export default AdminCourseCard;
-

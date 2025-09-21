@@ -43,16 +43,18 @@ const StudentSection: React.FC<StudentSectionProps> = ({
           <div
             key={content.id || index}
             onClick={() => {
-                // This logic correctly identifies which sections are clickable
-                if (SectionName === "Assignments" || SectionName === "Quizzes") {
-                    onContentAction("click", content.id);
-                }
+              // This logic correctly identifies which sections are clickable
+              if (SectionName === "Assignments" || SectionName === "Quizzes") {
+                onContentAction("click", content.id);
+              }
             }}
             className={`
               p-2 border-b border-base-300 last:border-b-0
-              ${(SectionName === "Assignments" || SectionName === "Quizzes") 
-                ? "cursor-pointer hover:bg-base-200 transition-colors rounded-md" 
-                : ""}
+              ${
+                SectionName === "Assignments" || SectionName === "Quizzes"
+                  ? "cursor-pointer hover:bg-base-200 transition-colors rounded-md"
+                  : ""
+              }
             `}
           >
             <SectionContent

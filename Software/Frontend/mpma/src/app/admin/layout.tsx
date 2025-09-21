@@ -28,10 +28,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     { name: "Dashboard", path: "/admin/Dashboard", icon: <FaHome /> },
     //{ name: "View Profile", path: "/admin/AdminProfile", icon: <FaUser /> },
     { name: "View Courses", path: "/admin/AdminCourse2", icon: <FaBookOpen /> },
-    { name: "View Calendar", path: "/admin/AdminCalendaViewPage", icon: <FaCalendarAlt /> },
+    {
+      name: "View Calendar",
+      path: "/admin/AdminCalendaViewPage",
+      icon: <FaCalendarAlt />,
+    },
     // { name: "Notification", path: "/admin/Notification", icon: <FaBell /> },
-    { name: "Course Management", path: "/admin/CourseManagement_2", icon: <FaCogs /> },
-    { name: "Attendance Management", path: "/admin/AttendanceManagement", icon: <FaUserCheck /> },
+    {
+      name: "Course Management",
+      path: "/admin/CourseManagement_2",
+      icon: <FaCogs />,
+    },
+    {
+      name: "Attendance Management",
+      path: "/admin/AttendanceManagement",
+      icon: <FaUserCheck />,
+    },
     //{ name: "Edit Account Details", path: "/admin/AdminEditAccountPage", icon: <FaEdit /> },
     //{ name: "Change Password", path: "/admin/AdminChangePassword", icon: <FaKey /> },
   ];

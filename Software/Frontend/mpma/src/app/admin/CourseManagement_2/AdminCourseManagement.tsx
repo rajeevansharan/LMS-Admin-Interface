@@ -6,7 +6,11 @@ import AssignLecturer from "./AssignLecturer";
 import EnrollStudents from "./EnrollStudents";
 import SemesterManagement from "./SemesterManagement";
 
-type ActiveTab = "addCourse" | "assignLecturer" | "enrollStudents" | "semesterManagement";
+type ActiveTab =
+  | "addCourse"
+  | "assignLecturer"
+  | "enrollStudents"
+  | "semesterManagement";
 
 export default function AdminCourseManagement() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("addCourse");
