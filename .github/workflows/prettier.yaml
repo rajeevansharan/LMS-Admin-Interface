@@ -1,0 +1,55 @@
+name: Format with Prettier
+
+on:
+  pull_request:
+    paths:
+      - 'Software/Frontend/**/*.{js,jsx,ts,tsx,css,scss,html,json,md}'
+      - 'Software/Frontend/mpma/package.json'
+      - 'Software/Frontend/mpma/package-lock.json'
+      - 'Software/Frontend/mpma/.prettierrc'
+  push:
+    paths:
+      - 'Software/Frontend/**/*.{js,jsx,ts,tsx,css,scss,html,json,md}'
+      - 'Software/Frontend/mpma/package.json'
+      - 'Software/Frontend/mpma/package-lock.json'
+      - 'Software/Frontend/mpma/.prettierrc'
+
+permissions:
+  contents: write # Allow the action to push commits
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Need the token to push changes back
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0' # Preferred Node.js version
+
+      - name: Install dependencies
+        working-directory: Software/Frontend/mpma
+        run: npm install
+
+      - name: Run Prettier and Format
+        working-directory: Software/Frontend/mpma
+        run: npx prettier --write .
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: Auto-format code with Prettier"
+          # Optional: Specify the file pattern to commit, defaults to all files
+          # file_pattern: '*.js *.ts *.css *.html'
+          # Optional: Specify the directory where the changes are
+          repository: Software/Frontend/mpma
+          # Optional: Add commit options
+          # commit_options: '--no-verify --signoff'
+          # Optional: Skip pushing (useful for testing)
+          # skip_push: true

@@ -1,0 +1,18 @@
+name: Build-Test Status for Non-Code Changes
+
+on:
+  pull_request:
+    paths:
+      - 'CODEOWNERS'
+      - '.github/**' # Covers PR templates, other workflow files
+      - 'README.md'
+      # Add other specific non-code top-level files/dirs if necessary
+      # For example, 'docs/**' if documentation changes should also get a pass
+      - '!Software/**' # Exclude anything under Software/
+
+jobs:
+  Build-Test: # Must match the required check name
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acknowledge non-code file changes
+        run: echo "Non-code files (like CODEOWNERS, PR templates, README) changed. Marking 'Build-Test' as successful for these changes."

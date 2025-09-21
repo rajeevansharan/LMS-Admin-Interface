@@ -1,0 +1,42 @@
+name: Format with Google Java Format
+# This workflow formats Java code using Google Java Format
+# and commits the changes if any formatting is needed.
+
+on:
+  pull_request:
+    paths:
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.java'
+      - 'Software/New Version/MPMA_LMS/Backend/**/pom.xml'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.properties'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.yml'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.yaml'
+
+  push:
+    paths:
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.java'
+      - 'Software/New Version/MPMA_LMS/Backend/**/pom.xml'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.properties'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.yml'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.yaml'
+
+
+# Add permissions block here
+permissions:
+  contents: write # Allow the action to push commits
+
+jobs:
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        # Optional: Fetch full history if needed for blame, usually not required for formatting
+        with:
+          fetch-depth: 0
+
+      - name: Format Java Code # Added a descriptive name
+        uses: axel-op/googlejavaformat-action@v4
+        with:
+          # Consider removing --skip-sorting-imports for full Google Style compliance
+          args: "--replace"
+          # The action handles committing and pushing by default if changes are made
+          # commit-message: "style: Auto-format Java code"

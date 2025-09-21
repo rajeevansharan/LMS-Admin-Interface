@@ -1,0 +1,47 @@
+name: Check Build for Backend
+
+on:
+  pull_request:
+    paths:
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.java'
+      - 'Software/New Version/MPMA_LMS/Backend/**/pom.xml'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.properties'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.yml'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.yaml'
+  push:
+    paths:
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.java'
+      - 'Software/New Version/MPMA_LMS/Backend/**/pom.xml'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.properties'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.yml'
+      - 'Software/New Version/MPMA_LMS/Backend/**/*.yaml'
+
+jobs:
+  Build-Test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23' # Preferred Java version
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository # Maven's local repository path
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build with Maven
+        working-directory: Software/New Version/MPMA_LMS/Backend/lms # Updated path for new version
+        run: ./mvnw -B clean compile
+
+    #   - name: Run Tests
+    #     working-directory: Software/New Version/MPMA_LMS/Backend/lms # Updated path for new version
+    #     run: ./mvnw test

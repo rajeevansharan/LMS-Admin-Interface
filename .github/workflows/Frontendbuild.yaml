@@ -1,0 +1,55 @@
+name: Check Build for Frontend
+
+on:
+  pull_request:
+    paths:
+      - 'Software/Frontend/**'
+      - '!Software/Frontend/**/*.md' # Exclude markdown files
+      - '!Software/Frontend/**/*.txt'
+  push:
+    paths:
+      - 'Software/Frontend/**'
+      - '!Software/Frontend/**/*.md' # Exclude markdown files
+      - '!Software/Frontend/**/*.txt'
+
+jobs:
+  Build-Test:
+    runs-on: ubuntu-latest
+
+    # Set a default working directory for all run steps in this job
+    defaults:
+      run:
+        working-directory: Software/Frontend/mpma
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js with dependency caching
+        uses: actions/setup-node@v4
+        with:
+          # Using LTS version '20' is often more stable for CI, but '22.14.0' is fine if you need it.
+          node-version: '20'
+          # Enable caching for npm
+          cache: 'npm'
+          # Point to the lock file in your project's subdirectory for accurate caching
+          cache-dependency-path: Software/Frontend/mpma/package-lock.json
+
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          # The path to the Next.js cache directory, relative to the repository root
+          path: Software/Frontend/mpma/.next/cache
+          # A unique key for the cache. It changes when your lock file or source code changes.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('Software/Frontend/mpma/package-lock.json') }}-${{ hashFiles('Software/Frontend/mpma/**/*.js', 'Software/Frontend/mpma/**/*.jsx', 'Software/Frontend/mpma/**/*.ts', 'Software/Frontend/mpma/**/*.tsx') }}
+          # A fallback key to use a previous cache if only source code changed
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('Software/Frontend/mpma/package-lock.json') }}-
+
+      - name: Install dependencies
+        # The working-directory is automatically applied from the 'defaults' setting
+        run: npm install
+
+      - name: Run Build Command
+        # The working-directory is automatically applied from the 'defaults' setting
+        run: npm run build

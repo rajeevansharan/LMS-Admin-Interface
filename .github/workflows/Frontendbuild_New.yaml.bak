@@ -1,0 +1,54 @@
+name: Check Build for Frontend
+
+on:
+  pull_request:
+    paths:
+      - 'Software/New Version/MPMA_LMS/Frontend/**'
+      - '!Software/New Version/MPMA_LMS/Frontend/**/*.md' # Exclude markdown files
+      - '!Software/New Version/MPMA_LMS/Frontend/**/*.txt'
+  push:
+    paths:
+      - 'Software/New Version/MPMA_LMS/Frontend/**'
+      - '!Software/New Version/MPMA_LMS/Frontend/**/*.md' # Exclude markdown files
+      - '!Software/New Version/MPMA_LMS/Frontend/**/*.txt'
+
+jobs:
+  Build-Test:
+    runs-on: ubuntu-latest
+
+    # Set the working directory for all steps in this job
+    defaults:
+      run:
+        working-directory: Software/New Version/MPMA_LMS/Frontend/lms-frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js with dependency caching
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # LTS version is generally recommended
+          # Enable caching for npm
+          cache: 'npm'
+          # Point to the lock file in your project's subdirectory
+          cache-dependency-path: Software/New Version/MPMA_LMS/Frontend/lms-frontend/package-lock.json
+
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          # The path is relative to the repository root
+          path: Software/New Version/MPMA_LMS/Frontend/lms-frontend/.next/cache
+          # The key uses hashes of files within the specific frontend directory
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('Software/New Version/MPMA_LMS/Frontend/lms-frontend/package-lock.json') }}-${{ hashFiles('Software/New Version/MPMA_LMS/Frontend/lms-frontend/**/*.js', 'Software/New Version/MPMA_LMS/Frontend/lms-frontend/**/*.jsx', 'Software/New Version/MPMA_LMS/Frontend/lms-frontend/**/*.ts', 'Software/New Version/MPMA_LMS/Frontend/lms-frontend/**/*.tsx') }}
+          # The restore-key is a fallback if source files changed
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('Software/New Version/MPMA_LMS/Frontend/lms-frontend/package-lock.json') }}-
+
+      - name: Install dependencies
+        # working-directory is no longer needed here due to the 'defaults' setting
+        run: npm install
+
+      - name: Run Build Command
+        # working-directory is no longer needed here due to the 'defaults' setting
+        run: npm run build

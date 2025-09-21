@@ -1,0 +1,47 @@
+name: Check Build for Backend
+
+on:
+  pull_request:
+    paths:
+      - 'Software/Backend/**/*.java'
+      - 'Software/Backend/**/pom.xml'
+      - 'Software/Backend/**/*.properties'
+      - 'Software/Backend/**/*.yml'
+      - 'Software/Backend/**/*.yaml'
+  push:
+    paths:
+      - 'Software/Backend/**/*.java'
+      - 'Software/Backend/**/pom.xml'
+      - 'Software/Backend/**/*.properties'
+      - 'Software/Backend/**/*.yml'
+      - 'Software/Backend/**/*.yaml'
+
+jobs:
+  Build-Test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23' # Preferred Java version
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository # Maven's local repository path
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build with Maven
+        working-directory: Software/Backend/backend # Adjust path as needed
+        run: ./mvnw -B clean compile
+
+    #   - name: Run Tests
+    #     working-directory: Software/Backend # Adjust path as needed
+    #     run: ./mvnw test

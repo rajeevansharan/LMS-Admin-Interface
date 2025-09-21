@@ -1,0 +1,5 @@
+# Ignore temporary files
+*.bkp
+
+# Ignore IDE generated files
+.vscode

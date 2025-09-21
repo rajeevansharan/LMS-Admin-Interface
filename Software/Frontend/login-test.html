@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; }
+        .container { border: 1px solid #ccc; padding: 20px; border-radius: 5px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { padding: 10px 15px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        #response { margin-top: 20px; padding: 10px; background: #f1f1f1; border-radius: 5px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Test Login API</h2>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" value="DEMO">
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" value="demo">
+        </div>
+        <button onclick="login()">Login</button>
+        <div id="response"></div>
+    </div>
+
+    <script>
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const responseDiv = document.getElementById('response');
+            
+            responseDiv.textContent = 'Sending request...';
+            
+            try {
+                const response = await fetch('http://localhost:8080/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const contentType = response.headers.get('content-type');
+                let data;
+                
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                    responseDiv.textContent = 'Response: ' + JSON.stringify(data, null, 2);
+                } else {
+                    // Handle non-JSON responses
+                    const text = await response.text();
+                    responseDiv.textContent = 'Response (non-JSON): ' + text;
+                    data = { error: text };
+                }
+                
+                if (response.ok) {
+                    console.log('Login successful!');
+                    console.log('Token:', data.token);
+                    // Store token in localStorage
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify({
+                        id: data.id,
+                        username: data.username,
+                        name: data.name,
+                        role: data.role
+                    }));
+                } else {
+                    console.error('Login failed:', data);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                responseDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

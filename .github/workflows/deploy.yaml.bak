@@ -1,0 +1,83 @@
+name: Build, Stage, and Deploy to VM
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  BACKEND_IMAGE_NAME: mpma/backend
+  FRONTEND_IMAGE_NAME: mpma/frontend
+  PROJECT_DIR_ON_VM: /home/${{ secrets.AZURE_VM_USERNAME }}/my-app
+
+jobs:
+  build_and_deploy:
+    name: Build, Transfer, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout Repository Code'
+        uses: actions/checkout@v4
+
+      # --- Build Images ---
+      - name: 'Build Backend Image'
+        working-directory: ./Software/Backend/backend
+        run: docker build -t ${{ env.BACKEND_IMAGE_NAME }}:latest .
+      - name: 'Save Backend Image to a .tar file'
+        run: docker save -o backend.tar ${{ env.BACKEND_IMAGE_NAME }}:latest
+
+      - name: 'Build Frontend Image'
+        working-directory: ./Software/Frontend/mpma
+        run: docker build -t ${{ env.FRONTEND_IMAGE_NAME }}:latest .
+      - name: 'Save Frontend Image to a .tar file'
+        run: docker save -o frontend.tar ${{ env.FRONTEND_IMAGE_NAME }}:latest
+
+      # --- Stage all deployment files into one directory ---
+      - name: 'Stage Deployment Files'
+        run: |
+          mkdir deployment_package
+          # Move the large image files
+          mv backend.tar frontend.tar ./deployment_package/
+          # Copy the configuration files from the repo
+          cp ./Software/Docker/docker-compose.yml ./deployment_package/
+          cp ./Software/Nginx/nginx.conf ./deployment_package/
+          # Create the .env file directly inside the package
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> ./deployment_package/.env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> ./deployment_package/.env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> ./deployment_package/.env
+
+      # --- Transfer the single staged directory ---
+      - name: 'Copy Staged Directory to VM'
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USERNAME }}
+          key: ${{ secrets.AZURE_VM_SSH_PRIVATE_KEY }}
+          source: "./deployment_package/*" # Copy the contents of the directory
+          target: ${{ env.PROJECT_DIR_ON_VM }} # Directly to the final destination
+
+      # --- Deploy on VM ---
+      - name: 'Deploy on VM'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USERNAME }}
+          key: ${{ secrets.AZURE_VM_SSH_PRIVATE_KEY }}
+          script: |
+            # Change into the subdirectory where our files were copied
+            cd ${{ env.PROJECT_DIR_ON_VM }}
+
+            echo "--- Loading images into Podman ---"
+            podman load -i backend.tar
+            podman load -i frontend.tar
+            
+            echo "--- Restarting application service ---"
+            # This single command tells systemd to restart the master service,
+            # which will run 'podman-compose up' with the new files.
+            sudo systemctl restart mpma-app.service
+
+            echo "--- Cleaning up temporary image files ---"
+            rm backend.tar frontend.tar
+            podman image prune -af
+            
+            echo "--- Deployment Complete ---"

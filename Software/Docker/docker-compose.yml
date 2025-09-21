@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # The PostgreSQL database service.
+  database:
+    image: postgres:15-alpine
+    restart: always
+    ports:
+      # Maps the database port 5432 on the host to port 5432 in the container. Consider restricting this in production.
+      # This port is used by the backend to connect to the database.
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 8heyLTRIfuqo5riroriDAphEweBruwEb
+      POSTGRES_DB: mpma_db
+    volumes:
+      # Persists database data on the host machine. Critical for data safety.
+      - postgres_data:/var/lib/postgresql/data
+
+  # The Java backend application service.
+  backend:
+    image: mpma/backend:latest
+    restart: always
+    ports:
+      # Exposes the backend API on port 8080.
+      - "8080:8080"
+    depends_on:
+      - database
+
+  # The Next.js frontend application service.
+  # This container is NOT exposed to the internet directly.
+  frontend:
+    image: mpma/frontend:latest
+    restart: always
+    depends_on:
+      - backend
+
+  # The Nginx reverse proxy. This is the single entry point for all web traffic.
+  nginx:
+    image: nginx:1.23-alpine
+    restart: always
+    ports:
+      # Maps the standard web port 80 on the host to port 80 in the container.
+      - "80:80"
+    volumes:
+      # Loads the custom Nginx configuration file.
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+
+# Defines the named volume used by the database to persist its data.
+volumes:
+  postgres_data:

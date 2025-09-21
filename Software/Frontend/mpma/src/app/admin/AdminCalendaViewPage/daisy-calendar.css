@@ -1,0 +1,39 @@
+/* Override react-calendar base styles with DaisyUI theme */
+
+.daisy-calendar {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+}
+
+.daisy-calendar .react-calendar__tile {
+  padding: 1rem 0.5rem;
+  text-align: center;
+  border-radius: 0.75rem;
+  transition: background 0.3s ease;
+}
+
+.daisy-calendar .react-calendar__tile--now {
+  background-color: var(--fallback-bc, #f0f0f0);
+}
+
+.daisy-calendar .react-calendar__tile--active {
+  background-color: var(--fallback-pc, #3b82f6);
+  color: white;
+}
+
+.daisy-calendar .react-calendar__navigation button {
+  appearance: button;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  background-color: transparent;
+  color: var(--fallback-bc, currentColor);
+  border: none;
+}
+
+.daisy-calendar .react-calendar__month-view__weekdays {
+  text-align: center;
+  font-weight: 600;
+  padding: 0.5rem 0;
+  color: var(--fallback-bc);
+}
