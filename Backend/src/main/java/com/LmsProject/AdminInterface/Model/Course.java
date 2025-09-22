@@ -9,13 +9,6 @@ import java.util.Date;
 import java.util.List;
 import lombok.Data;
 
-/**
- * Entity class representing a course in the MPMA system.
- *
- * <p>A course is a central entity in the learning management system that contains materials,
- * lectures, and is associated with lecturers. This class manages the relationships between these
- * entities and provides helper methods for maintaining referential integrity.
- */
 @Entity
 @Table(name = "Course")
 @Inheritance(strategy = InheritanceType.JOINED)
