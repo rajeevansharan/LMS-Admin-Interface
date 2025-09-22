@@ -1,0 +1,10 @@
+.container {
+  width: 100%;
+  max-width: 600px; /* Default max width */
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 900px; /* Max width for larger screens */
+  }
+}
