@@ -1,5 +1,6 @@
 package com.LmsProject.AdminInterface.DTO;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -12,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class CourseDTO {
   private Long courseId;
   private String name;
-  private Date startDate;
-  private Date endDate;
+  private LocalDate startDate;
+  private LocalDate endDate;
   private Set<LecturerSimpleDTO> lecturers;
   private Set<LectureSimpleDTO> lectures;
 }

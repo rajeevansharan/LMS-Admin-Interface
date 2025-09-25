@@ -1,5 +1,6 @@
 package com.LmsProject.AdminInterface.Controller;
 
+import java.util.Map;
 import java.util.Optional;
 
 import com.LmsProject.AdminInterface.DTO.AdminDTO;
@@ -43,7 +44,8 @@ public class AdminController {
     @GetMapping("/adminDashboardStatus")
         public AdminDashboardStatsDTO getDashboardStats() {
         StudentCountDTO studentCount = studentService.getTotalStudentCount();
-        CourseStatusCountDTO courseStatusCount = courseService.getCourseStatusCounts();
+        Map<String,Long> counts= courseService.getCourseStatusCounts();
+        CourseStatusCountDTO courseStatusCount = new CourseStatusCountDTO(counts.get("ACTIVE"), counts.get("COMPLETED"));
 
         return new AdminDashboardStatsDTO(
                 courseStatusCount.getActiveCount(),

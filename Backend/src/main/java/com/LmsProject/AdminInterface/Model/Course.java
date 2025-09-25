@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import lombok.Data;
 
@@ -27,11 +28,11 @@ public class Course {
   /** The date when the course begins. */
   @Temporal(TemporalType.DATE)
   @Column(nullable = false)
-  private Date startDate;
+  private LocalDate startDate;
 
   /** The date when the course ends. Optional field. */
   @Temporal(TemporalType.DATE)
-  private Date endDate;
+  private LocalDate endDate;
 
   /**
    * List of lecturers teaching this course. Many-to-many relationship: one course can have multiple
@@ -116,9 +117,6 @@ public class Course {
   private CourseStatus status ;
 
 
-  /**
-   * Enum representing the possible statuses of a course.
-   */
   public enum CourseStatus {
     ACTIVE, COMPLETED
   }
