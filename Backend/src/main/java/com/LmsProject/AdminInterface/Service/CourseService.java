@@ -1,9 +1,6 @@
 package com.LmsProject.AdminInterface.Service;
 
-import com.LmsProject.AdminInterface.DTO.ActivityDTO;
-import com.LmsProject.AdminInterface.DTO.CourseDTO;
-import com.LmsProject.AdminInterface.DTO.CourseStatusCountDTO;
-import com.LmsProject.AdminInterface.DTO.CourseViewDTO;
+import com.LmsProject.AdminInterface.DTO.*;
 import com.LmsProject.AdminInterface.Model.Course;
 import com.LmsProject.AdminInterface.Model.Person;
 
@@ -38,15 +35,6 @@ public interface CourseService {
    */
   List<Course> getAllCourses();
 
-  /**
-   * Retrieves a specific course by its unique identifier.
-   *
-   * <p>This method can throw exceptions if the course with the given ID doesn't exist.
-   *
-   * @param id The unique identifier of the course to retrieve
-   * @return The course with the specified ID
-   * @throws lk.slpa.mpma.backend.exception.ResourceNotFoundException if course not found
-   */
   Course getCourseById(Long id);
 
   /**
@@ -61,15 +49,7 @@ public interface CourseService {
   public Course saveCourse(Course course);
 
   Course saveCreatedCourse(CourseCreateDTO courseDto);
-  /**
-   * Removes a course from the system by its ID.
-   *
-   * <p>This operation may cascade to related entities based on the entity relationships. Use with
-   * caution as it permanently deletes the course and potentially its related entities.
-   *
-   * @param id The unique identifier of the course to delete
-   * @throws lk.slpa.mpma.backend.exception.ResourceNotFoundException if course not found
-   */
+
   void deleteCourse(Long id);
 
   /**
@@ -98,10 +78,6 @@ public interface CourseService {
 
 
   List<ActivityDTO> getActivitiesByCourseId(Long courseId);
-
-  void createAssignment(Long courseId, AssignmentCreateRequestDTO request, Person creator);
-
-  void updateAssignment(Long assignmentId, AssignmentCreateRequestDTO request);
 
 
   public CourseStatusCountDTO getCourseStatusCounts();
