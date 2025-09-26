@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * the repository layer to perform data access operations.
  */
 @Service
-public abstract class StudentServiceImpl implements StudentService {
+public  class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
 

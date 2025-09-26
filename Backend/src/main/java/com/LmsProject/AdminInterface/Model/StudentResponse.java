@@ -19,11 +19,6 @@ public class StudentResponse {
   @Column(nullable = false)
   private Long studentId;
 
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "submission_id", nullable = false)
-
-
   @Column(columnDefinition = "TEXT")
   private String responseContent;
 

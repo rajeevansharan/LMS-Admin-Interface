@@ -13,5 +13,4 @@ public interface StudentResponseRepository extends JpaRepository<StudentResponse
   Optional<StudentResponse> findByStudentIdAndQuestionId(Long studentId, Long questionId);
 
 
-  List<StudentResponse> findBySubmissionSubmissionId(Long submissionId);
 }
