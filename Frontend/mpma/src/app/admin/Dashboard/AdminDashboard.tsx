@@ -42,10 +42,10 @@ const AdminDashboard = () => {
         });
 
         // Fetch unassigned courses
-        const coursesResponse = await axios.get(
+      /*   const coursesResponse = await axios.get(
           "http://localhost:8080/api/adminProfile/unassigned-courses"
         );
-        setUnassignedCourses(coursesResponse.data);
+        setUnassignedCourses(coursesResponse.data); */
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
