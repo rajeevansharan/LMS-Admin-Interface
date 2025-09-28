@@ -42,9 +42,9 @@ public class AdminController {
 
     //Admin dashboard status
     @GetMapping("/adminDashboardStatus")
-        public AdminDashboardStatsDTO getDashboardStats() {
+    public AdminDashboardStatsDTO getDashboardStats() {
         StudentCountDTO studentCount = studentService.getTotalStudentCount();
-        Map<String,Long> counts= courseService.getCourseStatusCounts();
+        Map<String, Long> counts = courseService.getCourseStatusCounts();
         CourseStatusCountDTO courseStatusCount = new CourseStatusCountDTO(counts.get("ACTIVE"), counts.get("COMPLETED"));
 
         return new AdminDashboardStatsDTO(
