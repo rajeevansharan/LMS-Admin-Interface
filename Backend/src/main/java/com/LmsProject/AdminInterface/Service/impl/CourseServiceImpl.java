@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.Date;
 import com.LmsProject.AdminInterface.DTO.CourseDTO;
 import com.LmsProject.AdminInterface.DTO.LectureSimpleDTO;
 import com.LmsProject.AdminInterface.DTO.LecturerSimpleDTO;
